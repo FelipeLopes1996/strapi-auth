@@ -72,27 +72,26 @@ module.exports = {
 
     const post = await strapi.services.post.find({
       id,
-      user: ctx.state.user.id,
+      user: ctx.state.user.id
     });
 
     if (!post || !post.length) {
-      return ctx.unauthorized("You cannot update this post.");
+      return ctx.unauthorized('You cannot update this post.');
     }
 
-    if (ctx.is("multipart")) {
+    if (ctx.is('multipart')) {
       const { data, files } = parseMultipartData(ctx);
-      entity = await strapi.services.post.update(
-        { id },
-        { ...data, user: ctx.state.user.id },
-        {
-          files,
-        }
-      );
+      entity = await strapi.services.post.update({ id }, {
+        ...data,
+        user: ctx.state.user.id
+      }, {
+        files,
+      });
     } else {
-      entity = await strapi.services.post.update(
-        { id },
-        { ...ctx.request.body, ...data, user: ctx.state.user.id }
-      );
+      entity = await strapi.services.post.update({ id }, {
+        ...ctx.request.body,
+        user: ctx.state.user.id
+      });
     }
 
     return sanitizeEntity(entity, { model: strapi.models.post });
