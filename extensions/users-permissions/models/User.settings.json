@@ -13,15 +13,13 @@
     "username": {
       "type": "string",
       "minLength": 3,
-      "unique": true,
-      "configurable": false,
       "required": true
     },
     "email": {
       "type": "email",
       "minLength": 6,
-      "configurable": false,
-      "required": true
+      "required": true,
+      "unique": true
     },
     "provider": {
       "type": "string",
@@ -30,7 +28,6 @@
     "password": {
       "type": "password",
       "minLength": 6,
-      "configurable": false,
       "private": true
     },
     "resetPasswordToken": {
@@ -59,9 +56,26 @@
       "plugin": "users-permissions",
       "configurable": false
     },
+    "cpf": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
     "posts": {
       "via": "user",
       "collection": "post"
+    },
+    "numberPhone": {
+      "type": "string",
+      "required": true
+    },
+    "gender": {
+      "type": "string",
+      "required": true
+    },
+    "birthDate": {
+      "type": "string",
+      "required": true
     }
   }
 }

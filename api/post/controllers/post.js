@@ -30,40 +30,55 @@ module.exports = {
     return sanitizeEntity(entity, { model: strapi.models.post });
   },
 
-  async find(ctx) {
-    let entities;
+  // "local-policy", "global::is-logged-in"
 
-    const query = { ...ctx.query, user: ctx.state.user.id };
+  // async find(ctx) {
+  //   let postsEntites;
+  //   const query = { ...ctx.query };
 
-    if (ctx.query._q) {
-      entities = await strapi.services.post.search(query);
-    } else {
-      entities = await strapi.services.post.find(query);
-    }
+  //   if (ctx.query._q) {
+  //     postsEntites = await strapi.services.post.search(query);
+  //   } else {
+  //     postsEntites = await strapi.services.post.find(query);
+  //   }
 
-    return entities.map((entity) =>
-      sanitizeEntity(entity, { model: strapi.models.post })
-    );
-  },
+  //   return postsEntites.map((entity) =>
+  //     sanitizeEntity(entity, { model: strapi.models.post })
+  //   );
+  // }
 
-  async findOne(ctx) {
-    const { id } = ctx.params;
-    const entity = await strapi.services.post.findOne({
-      id,
-      user: ctx.state.user.id,
-    });
-    return sanitizeEntity(entity, { model: strapi.models.post });
-  },
+  // código antigo
+  // async find(ctx) {
+  // let entities;
 
-  async count(ctx) {
-    const query = { ...ctx.query, user: ctx.state.user.id };
+  // const query = { ...ctx.query, user: ctx.state.user.id };
 
-    if (ctx.query._q) {
-      return await strapi.services.post.countSearch(query);
-    }
+  // if (ctx.query._q) {
+  //   entities = await strapi.services.post.search(query);
+  // } else {
+  //   entities = await strapi.services.post.find(query);
+  // }
 
-    return await strapi.services.post.count(query);
-  },
+  // return entities.map((entity) =>
+  //   sanitizeEntity(entity, { model: strapi.models.post })
+  // );
+  // },
+
+  // async findOne(ctx) {
+  //   const { id } = ctx.params;
+  //   const entity = await strapi.services.post.findOne({ id, user: ctx.state.user.id });
+  //   return sanitizeEntity(entity, { model: strapi.models.post });
+  // },
+
+  // async count(ctx) {
+  //   const query = { ...ctx.query, user: ctx.state.user.id };
+
+  //   if (ctx.query._q) {
+  //     return await strapi.services.post.countSearch(query);
+  //   };
+
+  //   return await strapi.services.post.count(query);
+  // },
 
   async update(ctx) {
     const { id } = ctx.params;
@@ -72,26 +87,20 @@ module.exports = {
 
     const post = await strapi.services.post.find({
       id,
-      user: ctx.state.user.id
+      user: ctx.state.user.id,
     });
 
     if (!post || !post.length) {
-      return ctx.unauthorized('You cannot update this post.');
+      return ctx.unauthorized("You cannot update this post.");
     }
 
-    if (ctx.is('multipart')) {
+    if (ctx.is("multipart")) {
       const { data, files } = parseMultipartData(ctx);
-      entity = await strapi.services.post.update({ id }, {
-        ...data,
-        user: ctx.state.user.id
-      }, {
+      entity = await strapi.services.post.update({ id }, data, {
         files,
       });
     } else {
-      entity = await strapi.services.post.update({ id }, {
-        ...ctx.request.body,
-        user: ctx.state.user.id
-      });
+      entity = await strapi.services.post.update({ id }, ctx.request.body);
     }
 
     return sanitizeEntity(entity, { model: strapi.models.post });

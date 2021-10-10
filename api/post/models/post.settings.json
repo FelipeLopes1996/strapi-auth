@@ -11,22 +11,26 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": true,
-      "minLength": 5,
-      "unique": false,
-      "maxLength": 200
-    },
     "content": {
       "type": "richtext",
       "required": true,
       "minLength": 10
     },
+    "Slug": {
+      "type": "uid"
+    },
+    "category": {
+      "type": "string",
+      "required": true
+    },
     "user": {
+      "via": "posts",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "posts"
+      "model": "user"
+    },
+    "price": {
+      "type": "string",
+      "required": true
     }
   }
 }
